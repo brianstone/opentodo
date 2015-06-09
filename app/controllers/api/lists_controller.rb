@@ -11,7 +11,7 @@ class Api::ListsController < ApiController
     if list.save
       render json: list
     else
-      render json: { errors: list.errors.full_message }, status: :unprocessable_entity
+      render json: { errors: list.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -22,6 +22,15 @@ class Api::ListsController < ApiController
       render json: {}, status: :no_content
     rescue ActiveRecord::RecordNotFound
       render :json => {}, :status => :not_found
+    end
+  end
+
+  def update
+    list = List.find(params[:id])
+    if list.update_attributes(list_params)
+      render json: list
+    else
+      render json: { errors: list.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

@@ -10,7 +10,11 @@ class ApiController < ApplicationController
   def authenticated?
     authenticate_or_request_with_http_basic do |username, password| 
       user = User.where( username: username ).first
-      user && user.authenticate(password)
+      if user && user.authenticate(password)
+        @current_user = user
+      else
+        false
+      end
     end
   end
 
